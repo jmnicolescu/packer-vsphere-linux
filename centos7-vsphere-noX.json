@@ -73,6 +73,11 @@
 
   "provisioners": [
     {
+      "type": "file",
+      "source": "scripts",
+      "destination": "/root/scripts"
+    },
+    {
       "type": "shell",
       "inline": [ "sudo yum -y upgrade" ]
     },

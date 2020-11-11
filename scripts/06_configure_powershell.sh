@@ -28,6 +28,7 @@ yum -y install dotnet-runtime-3.1
 # Installation via Direct Download - CentOS 7
 wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.3/powershell-7.0.3-1.rhel.7.x86_64.rpm
 rpm -ivh ./powershell-7.0.3-1.rhel.7.x86_64.rpm
+rm -f ./powershell-7.0.3-1.rhel.7.x86_64.rpm
 
 cat << EOF > /root/configure_powercli.ps1
 Set-PSRepository -Name "PSGallery" -InstallationPolicy "Trusted"

@@ -9,6 +9,7 @@
 # wget https://github.com/atom/atom/releases/download/v1.50.0/atom.x86_64.rpm
 wget https://github.com/atom/atom/releases/download/v1.46.0/atom.x86_64.rpm
 yum -y localinstall ./atom.x86_64.rpm
+rm -f ./atom.x86_64.rpm
 
 # rpm --import https://packagecloud.io/AtomEditor/atom/gpgkey
 # cat << EOF > /etc/yum.repos.d/atom.repo
