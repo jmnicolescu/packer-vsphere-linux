@@ -1,0 +1,17 @@
+# Logs
+*.log
+
+# Ignore Mac .DS_Store files
+.DS_Store
+.backup
+
+# Ignored vscode files
+.vscode/
+
+# Cache objects
+packer_cache/
+
+# For built boxes
+*.box
+
+scripts/01*

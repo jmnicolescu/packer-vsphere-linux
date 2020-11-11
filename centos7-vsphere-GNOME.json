@@ -1,0 +1,140 @@
+{
+  "variables": {
+    "iso_url": "[neptune] ISO/CentOS-7-x86_64-DVD-2003.iso",
+    "guest_build_notes": "Templeate using CentOS-7-x86_64-DVD-2003.iso",
+    "guest_vcpu": "1",
+    "guest_memory": "8192",
+    "guest_disk0_size": "25600",
+    "guest_vm_name": "CentOS7-Template-GNOME",
+    "guest_templates_folder": "Templates",
+    "guest_type": "centos7_64Guest",
+    "guest_ssh_user": "root",
+    "guest_ssh_password": "{{env `TF_VAR_provider_vsphere_password`}}",
+    "vsphere_cluster": "EAST-Cluster",
+    "vsphere_datacenter": "EAST-DC",
+    "vsphere_datastore": "vsanDatastore",
+    "vsphere_network": "lab-mgmt",
+    "vsphere_host": "{{env `TF_VAR_provider_vsphere_host`}}",
+    "vsphere_user": "{{env `TF_VAR_provider_vsphere_user`}}",
+    "vsphere_password": "{{env `TF_VAR_provider_vsphere_password`}}"
+  },
+
+  "builders": [
+    {
+      "type": "vsphere-iso",
+  
+      "vcenter_server": "{{user `vsphere_host`}}",
+      "username": "{{user `vsphere_user`}}",
+      "password": "{{user `vsphere_password`}}",
+      "insecure_connection": "true",
+
+      "datacenter": "{{user `vsphere_datacenter`}}",
+      "cluster": "{{user `vsphere_cluster`}}",
+      "datastore": "{{user `vsphere_datastore`}}",
+
+      "vm_name": "{{user `guest_vm_name`}}",
+      "folder": "{{user `guest_templates_folder`}}",
+      "notes": "{{user `guest_build_notes`}}",
+      "guest_os_type": "{{user `guest_type`}}",
+      
+      "boot_wait": "10s",
+      "boot_order": "disk,cdrom,floppy",
+
+      "ssh_username": "{{user `guest_ssh_user`}}",
+      "ssh_password": "{{user `guest_ssh_password`}}",
+
+      "CPUs": "{{user `guest_vcpu`}}",
+      "RAM": "{{user `guest_memory`}}",
+      "RAM_reserve_all": false,
+
+      "disk_controller_type": "pvscsi",
+      "storage": [
+        {
+          "disk_size": "{{user `guest_disk0_size`}}",
+          "disk_thin_provisioned": true
+        }
+      ],
+      "network_adapters": [
+        {
+          "network": "{{user `vsphere_network`}}",
+          "network_card": "vmxnet3"
+        }
+      ],
+      "convert_to_template": true,
+
+      "iso_paths": ["{{user `iso_url`}}"],
+      "floppy_files": ["ks-GNOME.cfg"],
+      "boot_command": [
+        "<esc><wait>",
+        "linux ks=hd:fd0:/ks-GNOME.cfg<enter>"
+      ]
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [ "sudo yum -y upgrade" ]
+    },
+    {
+      "type": "shell",
+      "script": "scripts/01_juliusn_settings.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/02_configure_httpd.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/03_configure_ntp.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/05_configure_nfs.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/06_configure_powershell.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/07_install_atom.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/08_configure_vnc.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/09_configure_named.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/10_cleanup_gnome.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/11_install_python.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/12_install_ansible.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/13_install_ms_code.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/14_install_fio_nmon.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/15_install_packer_terraform.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/16_install_ovftool.sh"
+    }
+  ] 
+}
