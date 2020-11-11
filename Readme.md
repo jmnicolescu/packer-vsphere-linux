@@ -1,6 +1,6 @@
 # Using Packer to build a CentOS template for VMware vSphere
 
-This repository contains files used by [Packer][packer] to create a CentOS 7.x image.
+This repository contains files used by [Packer] to create a CentOS 7.x image.
 
 
 ### Configuration
